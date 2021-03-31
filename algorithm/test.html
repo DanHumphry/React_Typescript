@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>    
+//// level.1 신규아이디 추천
+//let arg = "z-+.^."
+// function solution(new_id) {
+//     let answer = '';
+
+//     new_id.toLowerCase()
+//     .split("").forEach((item)=>{
+//         if(/^[a-z0-9\-_.]*$/.test(item)) answer = answer + item;
+//     })
+
+//     answer = answer.split("");
+//     let delSpotIndex = [];
+//     answer.map((item, index)=>{
+//         if(item === ".") return index;
+//     }).forEach((v, idx, arr)=>{
+//        if(arr[idx] + 1 === arr[idx+1]) delSpotIndex.push(idx)
+//     })
+//     for (let i = delSpotIndex.length -1; i >= 0; i--){
+//         answer.splice(delSpotIndex[i],1);
+//     }
+
+//     answer = answer.join("");
+//     if(answer.indexOf(".") === 0) answer = answer.substring(1, answer.length);
+//     if(answer.lastIndexOf(".") === answer.length-1) answer = answer.substring(0, answer.length-1);
+
+//     if(answer === "") answer = "a"
+
+//     if(answer.length >= 16){
+//         answer = answer.substring(0, 15);
+//         if(answer.lastIndexOf(".") === answer.length-1) answer = answer.substring(0, 14)
+//     }
+
+//     if(answer.length <= 2){
+//         for(let i = answer.length-1; i < 2; i++){
+//             answer = answer + answer[i];
+//         }
+//     }
+
+//     return answer;
+// }
+
+// //k번째 수 
+// let arg = [1, 5, 2, 6, 3, 7, 4];
+// let arg2 = [[2, 5, 3], [4, 4, 1], [1, 7, 3]];
+// function solution(array, commands) {
+//     let answer = [];
+//     commands.forEach((item, index, arr)=>{
+//         answer.push(array.slice(item[0] - 1, item[1]).sort((a,b)=> a-b)[item[2]-1])
+//     })
+//     return answer;
+// }
+
+// //체육복
+// let arg = 2;
+// let arg2 = [1,2];
+// let arg3 = [1,2];
+
+// function solution(n, lost, reserve) {
+//     let answer = n - lost.length;
+//     let copy = [...lost];
+//     copy.forEach((item)=>{
+//         let i = 0;
+//         while(i < reserve.length){
+//             if(item === reserve[i]){
+//                 lost.splice(lost.indexOf(reserve[i]), 1);
+//                 reserve.splice(i, 1);
+//                 answer++;
+//                 break;
+//             }
+//             i++;
+//         }
+//     })
+//     reserve = reserve.sort((a,b)=>a-b);
+//     lost = lost.sort((a,b)=>a-b);
+
+//     lost.forEach((item)=>{
+//         let i = 0;
+//         while(i < reserve.length){
+//             if(reserve[i] - 1 === item || reserve[i] + 1 === item){
+//                 reserve.splice(i, 1);
+//                 answer++;
+//                 break;
+//             }
+//             i++;
+//         }
+//     })
+//     return answer;
+// }
+//체육복 간단답안 (후에 추가된 테스트 12경우 통과x - 중복삭제) Math.abs()>> 절대값 구하는 식..
+// function solution(n, lost, reserve) {
+//     return n - lost.filter(a => {
+//         const b = reserve.find(r => Math.abs(r-a) <= 1)
+//         if(!b) return true
+//         reserve = reserve.filter(r => r !== b)
+//     }).length
+// }
+
+
+// const React = (function(){
+//     let hooks = [];
+//     let idx = 0;
+//     function useState(initVal) {
+//         let _idx = idx;
+//         const state = hooks[idx] || initVal;
+//         const setState = newVal => {
+//             hooks[_idx] = newVal;
+//         };
+//         idx++;
+//         return [state, setState];
+//     }
+//     function render(Component){
+//         idx = 0;
+//         const C = Component();
+//         C.render();
+//         return C
+//     }
+//     return {useState, render};
+// })();
+
+// function Component() {
+//     const [count, setCount] = React.useState(1);
+//     const [text, setText] = React.useState('apple');
+//     return {
+//         render : () => console.log({count, text}),
+//         click : () => setCount(count + 1),
+//         type : word => setText(word)
+//     };
+// }
+// let App = React.render(Component);
+// App.click(); 
+// let App = React.render(Component); 
+// App.type('pear');
+// let App = React.render(Component);
+// App.click();
+// let App = React.render(Component);
+// App.type("");
+// let App = React.render(Component);
+
+
+
+
+
+// //3진법 뒤집기 toString과 parseInt에 주목.. 검색하니까 바로나와서 그냥 참고했음
+// let arg = 45;
+// function solution(n) {
+//     let answer = n.toString(3).split("").reverse().join("");
+//     return parseInt(answer, 3)
+// }
+
+// //2016년
+// let arg = 5;
+// let arg2 = 24;
+// function solution(a, b) {
+//     //1월 1일을 금요일 1이라고 생각
+//     //하루가 늘어날때마다 +1
+//     //합인 sum % 7의 나머지가 1일때 금요일, 2일때 토요일 ...0일때는 목요일로
+//     //days 배열생성
+//     let days = ["THU","FRI","SAT","SUN","MON","TUE","WED"]
+//     let month = [0,31,29,31,30,31,30,31,31,30,31,30,31];
+//     let sum = b;
+//     for(let i = 0; i < a; i++){
+//         sum += month[i];
+//     }
+//     let answer = days[sum%7];
+//     return answer;
+// }
+
+
+// //가운데 글자 가져오기
+// let arg = "abde";
+// function solution(s) {
+//     if(s.length%2 === 1){
+//         return s.split("")[Math.floor(s.length/2)]
+//     }else{
+//         return s.split("")[s.length/2] + s.split("")[s.length/2 + 1]
+//     }
+// }
+
+
+// //같은 숫자는 싫어
+// let arg = [1,1,3,3,0,1,1];
+// function solution(arr){
+//     let answer = [];
+//     arr.forEach((item, index)=>{
+//         if(answer[answer.length - 1] !== item) answer.push(item)
+//     })
+//     return answer;
+// }
+// //같은숫자는 싫어문제에서 깔끔하게 filter를 쓴 답안
+// function solution(arr){
+//     return arr.filter((val,index) => val != arr[index+1]);
+// }
+
+// //나누어 떨어지는 숫자배열
+// let arg = [5, 9, 7, 10];
+// let arg2 = 5;
+// function solution(arr, divisor) {
+//     let answer = arr.filter((item)=>item%divisor === 0)
+//     if(answer.length === 0) return [-1]
+//     else return answer.sort((a,b)=>a-b)
+// }
+
+//두 정수의 합
+// function solution(a, b) {
+//     let answer = 0;
+//     if(a > b) [a, b] = [b, a];
+
+//     for(let i=a; i<=b; i++) {
+//         answer += i;
+//     }
+//     return answer;
+// }
+
+
+// //문자열 내 마음대로 정렬하기
+// let arg = ["abce", "abcd", "cdx"];
+// let arg2 = 1;
+// function solution(strings, n) {
+//     return strings.sort(function(a, b){
+//         if(a.split("")[n] > b.split("")[n]) return 1;
+//         if(a.split("")[n] < b.split("")[n]) return -1;
+//         if(a.split("")[n] === b.split("")[n]){
+//             if(a > b) return 1;
+//             if(a < b) return -1;
+//         }
+//     })
+// }
+// //같은 문자열 내 마음대로 정렬하기 문제지만.. 자극받은 풀이 ㅠ..
+// function solution(strings, n){
+//     return strings.map(a=>[...a][n]+a).sort().map(a=>a.substring(1))
+// }
+
+
+// //포켓몬
+// let arg = [3,1,2,3]
+// function solution(nums) {
+//     // 선택해야하는 숫자 = nums.length/2 -> nums.length는 항상 짝수
+//     // nums에서 선택해야하는 숫자만큼 숫자를 골라내는 경우의 수 중 제일 다양하게 선택할 수 있는 경우
+//     // 즉 nums.length/2
+//     let answer = 0;
+//     const set = new Set(nums);
+//     nums.length/2 < [...set].length 
+//     ? answer = nums.length/2 
+//     : answer = [...set].length
+//     return answer;
+// }
+
+
+// //문자열 내 p와 y의 개수
+// let arg = "pPoooyY";
+// function solution(s){
+//     let answer = true;
+//     s.toLowerCase().split("").filter((x)=>x==='p').length === s.toLowerCase().split("").filter((x)=>x==='y').length
+//     ? null
+//     : answer = false
+//     return answer;
+// }
+
+
+// //문자열 내림차순으로 정렬
+// let arg = "Zbcdefg";
+// function solution(s) {
+//     return s.split("").sort().reverse().join("");
+// }
+
+
+//서울에서 김서방 찾기
+// let arg = ["Jane", "Kim"];
+// function solution(seoul) {
+//     return `"김서방은 ${seoul.indexOf("Kim")}에 있다"`;
+// }
+
+
+// //문자열 다루기 기본
+// let arg = "1234";
+// function solution(s) {
+//     let answer = false;
+//     if(s.length === 4 || s.length === 6){
+//         let rex = /[^(0-9)]/g;
+//         rex.test(s) === false ? answer = true : answer = false
+//     }
+//     return answer;
+// }
+
+
+// //소수찾기
+// let arg = 10;
+// function solution(n) {
+//     let answer = Array(n+1).fill(1)
+//     for(let j = 2; j <= Math.sqrt(n); j++){
+//         if(answer[j] === 0) continue;
+//         for(let k = j; j * k <= n; k++){ 
+//             answer[j * k] = 0;
+//         }
+//     }
+//     let count = -2;
+//     for(let i = 0; i<answer.length; i++) answer[i] === 1 ? count ++ : null
+
+//     return count;
+// }
+
+// //같은 소수 찾기인데 유난히 빛나보이던 코드
+// let arg = 10;
+// function numberOfPrime(n) {
+//     var result = 0;
+//     var cnt=0;
+//     for(var a=2; a<=n; a++){
+//         cnt=0;
+//         for(var b=1; b<=a; b++){
+//             if(a%b === 0)
+//             cnt++;
+//         }
+//         if(cnt === 2)
+//         result++;
+//     }
+//     return result;
+// }
+
+// //수박수박수박
+// let arg = 5;
+// function solution(n) {
+//     let answer = '';
+//     for(let i = 0; i < Math.floor(n/2); i++){
+//         answer += "수박";
+//     }
+//     if(n % 2 !== 0) answer += "수";
+
+//     return answer;
+// }
+
+
+// //문자열을 정수로 바꾸기
+// let arg = '-424'
+// function solution(s){
+//     if(/^(\-|\+)?([0-9]+|Infinity)$/.test(s)) return Number(s);
+//     return NaN;
+// }
+
+
+// //시저 함호
+// let arg = "a B z"
+// let arg2 = 1
+// //65~90 A~Z, 97~122 a~z
+// function solution(s, n) {
+//     return s.split("").map((item)=>{
+//         let asciiNum = item.charCodeAt(0);
+//         if(asciiNum === 32){
+//             return asciiNum;
+//         }else{
+//             if(65<=asciiNum && asciiNum<=90){
+//                 asciiNum + n > 90
+//                 ? asciiNum -= 26-n
+//                 : asciiNum += n;
+//             }else if(97<=asciiNum && asciiNum<=122){
+//                 asciiNum + n > 122
+//                 ? asciiNum -= 26-n
+//                 : asciiNum += n;
+//             }
+//             return asciiNum;
+//         }
+//     }).map((item)=>String.fromCharCode(item)).join("")
+// }
+
+
+// //내적
+// let arg = [1,2,3,4]
+// let arg2 = 	[-3,-1,0,2]
+// function solution(a,b){
+//     let arr = []
+//     for(let i = 0; i<a.length; i++){
+//         arr.push(a[i] * b[i]);
+//     }
+//     return arr.reduce((a,b)=>a+b)
+// }
+
+
+// //약수의 합
+// let arg = 12;
+// function solution(n) {
+//     let answer = 0;
+//     for (let i = 1; i <= n; i++) {
+//         n % i === 0 ? answer += i : null
+//     }
+//     return answer;
+// }
+
+// //약수의 합인데 재귀를 이용한 기발한 방법이더라
+// function solution(n, a=0, b=0) {
+//     console.log(a)
+//     console.log(b)
+//     return n<=a/2 ?b :solution(n,a+1,b+=n%a?0:a);
+// }
+// //마찬가지로 약수의 합인데 효율성이 괜찮아 보임
+// function solution(n) {
+//     var answer = 0;
+//     let i;
+//     for (i = 1; i <= Math.sqrt(n); i++){
+//         if (!(n%i)) {
+//             answer += (i+n/i);
+//         }
+//     }
+//     i--;
+//     return (i === n/i) ? answer-i : answer;
+// }
+
+// // 이상한 문자 만들기
+// let arg = "try hello world";
+// function solution(s){
+//     return s.split(" ")
+//     .map((item)=>item.split("")
+//     .map((it,id)=>id%2 === 0 ? it.toUpperCase() : it.toLowerCase())
+//     .join(""))
+//     .join(" ")
+// }
+
+
+// //자릿수 더하기
+// let arg = 123;
+// function solution(n){
+//     let lineLength = (n+'').split('').length
+//     let sum = 0;
+//     for(let i = lineLength; i > 0; i--){
+//         let lineSum = Math.floor(n / Math.pow(10, i)) * Math.pow(10, i);
+//         sum += Math.floor(( (n-lineSum) / Math.pow(10, i-1)));
+//     }
+//     return sum;
+// }
+
+
+// // 자연수 뒤집어 배열로 만들기
+// let arg = 12345;
+// function solution(n){
+//     let answer = [];
+//     (n+"").split("").forEach((item)=>answer.unshift(parseInt(item)))
+//     return answer;
+// }
+
+
+// //정수 내림차순으로 배치하기
+// let arg = 118372;
+// function solution(n) {
+//     return parseInt((n+"").split("").sort((a,b)=>b-a).join(""))
+// }
+
+
+// //정수 제곱근 판별
+// let arg = 121;
+// function solution(n) {
+//     let answer = 0;
+//     let sqrt = Math.sqrt(n)
+//     sqrt % 1 ? answer = -1 : answer = (sqrt+1) * (sqrt+1)
+//     return answer;
+// }
+
+
+// // 제일 작은 수 제거하기
+// let arg = [4,6,3,2,1];
+// function solution(arr) {
+//     let smallest = [...arr].sort((a,b)=>a-b)[0]
+//     arr.splice(arr.indexOf(smallest), 1)
+//     if(arr.length === 0) return [-1]
+//     else return arr;
+// }
+
+
+// //짝수와 홀수
+// let arg = -3;
+// function solution(num) {
+//     return num % 2 === 0 ? 'Even' : 'Odd'
+// }
+
+// //최대공약수와 최소공배수
+// let arg = 10;
+// let arg2 = 12;
+// function solution(n, m) {
+//     let arrN = Array.from({length: n}, (v, i) => i+1)
+//     let arrM = Array.from({length: m}, (v, i) => i+1)
+//     n = arrN.filter((item)=>arrN.length % item === 0)
+//     m = arrM.filter((item)=>arrM.length % item === 0)
+//     let answer = []
+//     let i = n.length - 1;
+//     while(i >= 0){
+//         m.forEach((item)=>{
+//             if(item === n[i]) answer.push(item)
+//         })
+//         if(answer.length > 0) break;
+//         else i--;
+//     }
+//     answer.push(m[m.length-1] * n[n.length-1] / answer[0])
+//     return answer;
+// }
+
+
+// // 키패드 누르기 
+// let arg = [1, 3, 4, 5, 8, 2, 1, 4, 5, 9, 5];
+// let arg2 = "right";
+// function solution(numbers, hand) {
+//     let answer = '';
+//     let currentLeftHand = [-1, 0];
+//     let currentRightHand = [1, 0];
+
+//     numbers.forEach((item, index, arr)=>{
+//         if(item === 1 || item === 4 || item === 7) {
+//             let itemLocation = item === 1 ? 3 : item === 4 ? 2 : 1;
+//             answer += "L";
+//             currentLeftHand = [-1, itemLocation];
+//         }
+//         else if(item === 3 || item === 6 || item === 9) {
+//             let itemLocation = item === 3 ? 3 : item === 6 ? 2 : 1
+//             answer += "R";
+//             currentRightHand = [1, itemLocation];
+//         }
+//         else{
+//             let itemLocation = item === 2 ? 3 : item === 5 ? 2 : item === 8 ? 1 : 0;
+//             let currentButton = [0, itemLocation];
+//             let leftAbs = Math.abs(currentLeftHand[0]-currentButton[0]) + Math.abs(currentLeftHand[1]-currentButton[1]);
+//             let rightAbs = Math.abs(currentRightHand[0]-currentButton[0]) + Math.abs(currentRightHand[1]-currentButton[1]);
+//             if(leftAbs === rightAbs){
+//                 answer += hand[0].toUpperCase();
+//                 if(hand === "left") currentLeftHand = [0, itemLocation];
+//                 else currentRightHand = [0, itemLocation];
+//             }else if(leftAbs < rightAbs){
+//                 answer += "L";
+//                 currentLeftHand = [0, itemLocation];
+//             }
+//             else{
+//                 answer += "R";
+//                 currentRightHand = [0, itemLocation]
+//             }
+//         }
+//     })
+//     return answer;
+// }
+
+
+// // 콜라츠 추측
+// let arg = 626331;
+// function solution(num) {
+//     let answer = 0;
+//     const Collatz = (n) => {
+//         if(n === 1) return answer;
+//         n % 2 === 0 ? n = n/2 : n = n*3 + 1
+//         answer += 1;
+//         if(answer === 500){
+//             answer = -1;
+//             return answer;
+//         }
+//         Collatz(n);
+//     }
+//     Collatz(num);
+//     return answer;
+// }
+
+
+// //평균 구하기
+// let arg = [1,2,3,4];
+// function solution(arr) {
+//     let answer = 0;
+//     arr.forEach((item)=>answer += item)
+//     return answer/arr.length;
+// }
+
+
+// //하샤드 수
+// let arg = 120;
+// function solution(x) {
+//     let sum = 0;
+//     let xLength = (x+'').split("").length
+//     let xCopy = x;
+//     for(let i = xLength; i > 0; i--){
+//         sum += Math.floor(xCopy / Math.pow(10, i-1));
+//         xCopy %= Math.pow(10, i-1);
+//     }
+//     return x % sum === 0 ? true : false
+// }
+
+
+// //핸드폰 번호 가리기
+// let arg = "01033334444"
+// function solution(phone_number) {
+//     let answer = '';
+//     let leg = phone_number.length
+//     for(let i = 0; i < leg-4; i++) answer += '*'
+//     return answer+phone_number.substring(leg-4, leg);
+// }
+
+
+// //행렬의 덧셈
+// let arg = [[1,2],[2,3]];
+// let arg2 = [[3,4],[5,6]];
+// function solution(arr1, arr2) {
+//     return arr1.map((item, index)=>item.map((it, idx)=>it + arr2[index][idx]))
+// }
+
+
+// //x만큼 간격이 있는 숫자
+// let arg = 2;
+// let arg2 = 5;
+// function solution(x, n) {
+//     let answer = [];
+//     let plusNumber = x;
+//     for(let i = 0; i<n; i++){
+//         answer.push(x)
+//         x += plusNumber;
+//     }
+//     return answer;
+// }
+
+
+// process.stdin.setEncoding('utf8');
+// process.stdin.on('data', data => {
+//     const n = data.split(" ");
+//     const a = Number(n[0]), b = Number(n[1]);
+//     let answer = '';
+//     for(let i = 0; i < b; i++){
+//         for(let l = 0; l < a; l++){
+//             answer += '*'
+//         }
+//         console.log(answer);
+//         answer = '';
+//     }
+// });
+
+
+
+// //소수 만들기
+// //3개 뽑아서 소수
+// let arg = [1,2,3,4]
+// function solution(nums) {
+//     const getCombinations =  (newArr, selectNumber) => {
+//         const results = [];
+//         if (selectNumber === 1) return newArr.map((value) => [value]); 
+
+//         newArr.forEach((fixed, index, origin) => {
+//         const rest = origin.slice(index + 1); 
+//         const combinations = getCombinations(rest, selectNumber - 1); 
+//         const attached = combinations.map((combination) => [fixed, ...combination]); 
+//         results.push(...attached); 
+//         });
+
+//         return results; 
+//     }
+//     const res = getCombinations(nums, 3);
+//     let answer = 0;
+//     res.forEach((item)=>{
+//         let sum = item.reduce((a,b)=>a+b);
+//         let cnt = 0;
+//         for(let a=1; a<=sum; a++){
+//             if(sum % a === 0) cnt++;
+//         }
+//         if(cnt === 2) answer++;
+//     })
+//     return answer;
+// }
+
+
+
+//인자로는 원본배열과, 자른배열, 잘린배열
+//함수는 정렬된 원본배열을 받아서 [1,2,3,4,5,6,7]
+//만약 자른배열이 [1,2,3] budget보다 작은경우
+// 배열들을 리턴하고 작은경우 함수를 실행
+//작은경우 함수는 잘린배열의 반을 붙이고 다시 재귀실행
+//언제까지 ? 붙였을때 합이 budget보다 커질때까지
+//커진다면 자른배열을 리턴하고 잘린배열의 0번째부터 더하면서
+//카운트 = 자른배열.length , 커지는 조건은 budget보다 커지기 전까지
+// 큰경우 함수실행은
+//반대로 자른배열을 다시 한번 더 반으로 자르는
+//것을 재귀, 언제까지 ? budget보다 작아질때까지
+//작아지면 다시 하나씩 더하면서 ~~ 반복
+// let arg = [1,3,2,5,4];
+// let arg2 = 9;
+// function solution(d, budget) {
+//     let sum = d.reduce((a,b)=>a+b);
+//     if(sum <= budget) return d.length;
+
+//     const arrSlice = (origin)=>{ //배열을 반으로 잘라 반과 나머지배열을 각각 return해주는 함수
+//         const halfArr = origin.slice(0, Math.ceil(origin.length/2));
+//         const restArr = origin.slice(Math.ceil(origin.length/2));
+//         return [halfArr, restArr];
+//     }
+
+//     const halfIsSmall = (half, rest)=>{
+//         let standard = half.reduce((a,b)=>a+b);
+//         let result = half.length;
+//         if(standard > budget){
+//             while(standard > budget){
+//                 standard -= half[result-1];
+//                 result--;
+//             }
+//             return result;
+//         }else{
+//             [halfArr, restArr] = arrSlice(rest);
+//             const halfPlusRest = half.concat(halfArr);
+//             return halfIsSmall(halfPlusRest, restArr);
+//         }
+
+//     }
+//     const halfIsBig = (half, rest)=>{
+//         let standard = half.reduce((a,b)=>a+b);
+//         let result = half.length;
+//         if(standard < budget){
+//             while(standard < budget){
+//                 standard += rest[0];
+//                 result++;
+//             }
+//             return result-1;
+//         }else{
+//             [halfArr, restArr] = arrSlice(half);
+//             const restPlusHalf = rest.concat(restArr);
+//             return halfIsBig(halfArr, restPlusHalf);
+//         }
+//     }
+//     // 코드시작, 정렬된 sortArr의 halfArr 모든요소의합이 지원금액보다 작다면
+//     // halfIsSmall 재귀함수 실행
+//     // 크다면 HalfIsBig 실행,
+//     let sortArr = d.sort((a,b)=>a-b);
+//     [halfArr, restArr] = arrSlice(sortArr);
+//     const halfsum = halfArr.reduce((a,b)=>a+b);
+
+//     if(halfsum === budget) return halfArr.length;
+//     else if(halfsum < budget) return halfIsSmall(halfArr, restArr);
+//     else return halfIsSmall(halfArr, restArr);
+// }
+
+
+
+
+
+
+
+
+// let arg = 5;
+// let arg2 = 	[1,1,1,3,3];
+// //실패율
+// function solution(N, stages) {
+//     let answer = [];
+//     let res = [];
+//     let people = stages.length;
+    
+//     stages.forEach((item, index, arr)=>{
+//         if(res[item]) res[item][1] += 1;
+//         else res[item] = [item, 1];
+//     })
+
+//     for(let i = 1; i<=N; i++){
+//         if(res[i] === undefined) res[i] = [i, 0]
+//     }
+    
+//     res.map((item, index, arr)=>{
+//         let itemCp = item[1];
+//         item[1] /= people;
+//         people -= itemCp;
+//         return item;
+//     }).sort((a,b)=>b[1]-a[1])
+//     .forEach((it)=>{
+//         if(it[0] !== N+1) answer.push(it[0])
+//     })
+
+//     return answer;
+// }
+
+
+
+// // 다트게임
+// let arg = "1D2S#10S"
+// function solution(dartResult) {
+//     let res = dartResult.replace(/[0-9]+[A-Z]|[*]|[#]/g, "\/$&").split('/');
+//     let answer = [];
+//     for(let i = 1; i < res.length; i++){
+//         if(res[i] !== '*' && res[i] !== '#'){
+//             res[i] = res[i].replace(/[A-Z]/g, "\/$&").split('/');
+//             let sq = res[i][1];
+//             res[i][1] === 'S' ? sq = 1 : res[i][1] === 'D' ? sq = 2 : sq = 3;
+//             answer.push(Math.pow(+res[i][0],sq));
+//         }else{
+//             if(res[i]==='*'){
+//                 if(answer.length === 1) answer[0] *= 2;
+//                 else{
+//                     answer[answer.length-1] *= 2;
+//                     answer[answer.length-2] *= 2;
+//                 }
+//             }else{
+//                 answer[answer.length-1] *= -1;
+//             }
+//         }
+//     }
+//     return answer.reduce((a,b)=>a+b);
+// }
+
+
+
+// //비밀지도
+// let arg = 6
+// let arg2 = 	[46, 33, 33 ,22, 31, 50]
+// let arg3 = [27 ,56, 19, 14, 14, 10]
+// function solution(n, arr1, arr2) {
+//     const parseBinary = (arr)=>{
+//         return arr.map((item)=>{
+//         let parseTwo = item.toString(2);
+//             if(parseTwo.length !== n){
+//                 while(parseTwo.length < n){
+//                     parseTwo = '0' + parseTwo;
+//                 }
+//             }
+//             return parseTwo;
+//         })
+//     }
+//     const newArr1 = parseBinary(arr1)
+//     const newArr2 = parseBinary(arr2)
+
+//     let answer = [];
+//     for(let i = 0; i<n; i++){
+//         let str = ''
+//         for(let l = 0; l<n; l++){
+//             if(newArr1[i].split('')[l] === '0' && newArr2[i].split('')[l] === '0') str += ' '
+//             else str += '#'
+//         }
+//         answer.push(str)
+//     }
+//     return answer;
+// }
+
+
+
+// ----level2------
+
+// //다리를 지나는 트럭
+// function solution(bridge_length, weight, truck_weights) {
+//     let time = 0;
+//     let completeTruck = [];
+//     let progressTruck = Array(bridge_length).fill(0);
+//     let restTruck = [...truck_weights];
+//     let limitWeight = 0;
+
+//     while(true){
+//         time++;
+//         let currentWeight = progressTruck.shift();
+//         limitWeight -= currentWeight;
+//         if(completeTruck.length === truck_weights.length) break;
+//         else if(limitWeight+restTruck[0] <= weight){
+//             limitWeight += restTruck[0];
+//             progressTruck.push(restTruck[0]);
+//             restTruck.shift();
+//         }else{
+//             progressTruck.push(0);
+//         }
+//         progressTruck[0] !== 0 ? completeTruck.push(progressTruck[0]) : null
+//     }
+//     return time;
+// }
+
+
+// //프린터
+// let arg = [3,3,4,2]
+// let arg2 = 3;
+// function solution(priorities, location) {
+//     let cnt = 0;
+//     const findNumber = priorities[location];
+//     priorities[location] += 0.9;
+//     let biggestNum = Math.max(...priorities);
+//     priorities = priorities.filter((x)=>x>=findNumber);
+//     while(biggestNum !== 0){
+//         const findIdx = priorities.indexOf(biggestNum);
+//         // console.log(`찾는 인덱스는${findIdx}이고 가장 큰 숫자는${biggestNum}`)
+//         if(findIdx === -1){
+//             if(priorities.length === 1){
+//                 cnt++;
+//                 break;
+//             }
+//             biggestNum--;
+//         }else{
+//             if(findNumber === biggestNum || findNumber+0.9 === biggestNum){
+//                 cnt += priorities.indexOf(findNumber+0.9) + 1;
+//                 break;
+//             }else{
+//                 const sliceResult = priorities.slice(0, findIdx);
+//                 const spliceResult = priorities.splice(findIdx+1);
+//                 priorities = spliceResult.concat(sliceResult);
+//                 cnt++;
+//             }
+//         }
+//     }
+//     return cnt;
+// }
+
+
+// //스킬트리
+// let arg = "CBD"
+// let arg2 = ["BACDE", "CBADF", "AECB", "BDA"]
+// function solution(str, arr) {
+//     return arr.map((itemInArr)=>{
+//         return itemInArr.split('').map((itemInItem)=>{ 
+//             return str.split('').map((itemInStr)=>{ 
+//                 if(itemInItem === itemInStr) return itemInStr;
+//                 else return null;
+//             }).join('')
+//         }).join('').split('')
+//         .map((val, idx)=>{
+//             if(str[idx] !== val) return false;
+//             else return true;
+//         }).indexOf(false) === -1
+//     }).filter((x)=>x===true).length
+// }
+
+
+
+// //기능개발
+// let arg = [93, 30, 55]
+// let arg2 = [1, 30, 5]
+// function solution (progresses, speeds){
+//     const shiftArr = (progresses, speeds, cnt, answer)=>{
+//         if(progresses.length === 0) return answer;
+
+//         if(progresses[0] >= 100) {
+//             cnt++;
+//             if(progresses[1] < 100 || progresses[1] === undefined) {
+//                 answer.push(cnt);
+//                 cnt = 0;
+//             }
+//             progresses.shift();
+//             speeds.shift();
+//             return shiftArr(progresses, speeds, cnt, answer);
+//         }else{
+//             return shiftArr(progresses.map((item, index)=>item+speeds[index]), speeds, cnt, answer);
+//         }
+//     }
+//     let count = 0;
+//     let answer = [];
+//     return shiftArr(progresses, speeds, count, answer);
+// }
+
+
+//멀쩡한 사각형
+//대각선은 해당 가로세로의 약수지점에서 격자의 꼭지점에 도달하게되고,
+//꼭지점에 도달할 경우 이동중이던 대각선은 하나의 격자만큼을 덜 자르게된다.
+//기본값은 변의 길이 중 큰 값 = 한칸씩 이동할때 대각선이 꼭지점에 도달하지 못한경우 +1 을 진행
+// let arg = 2;
+// let arg2 = 100;
+// function solution(w, h) {
+//     [w, h] = w <= h ? [w, h] : [h, w];
+//     let movedDistance, i = 0, cutedSquare = h;
+
+//     while(i < w){
+//         i++;
+//         movedDistance = h*i/w;
+//         if(!Number.isInteger(movedDistance)) cutedSquare++;
+//         else{
+//             if (i === 1) break;
+//             else if (w%i === 0 && h%i === 0 && w !== h) {
+//                 cutedSquare += w/i - 1;
+//                 break;
+//             }
+//         }
+//     }
+//     return (w*h) - cutedSquare;
+// }
+
+
+
+// function solution(w, h) {    
+//     let sum = 0;
+//     let m = h / w;
+//     let y = 0;
+//     for (let i = 0; i < w; i++) {
+//         y = m * i;
+//         sum += Math.floor(y);
+//     }
+//     return sum * 2;
+// }
+
+// function solution(w, h) {
+//     let answer = 0;
+//     w === h ? answer = w * Math.ceil(h/w) : w < h ? answer = w * Math.ceil(h/w) : answer = h * Math.ceil(w/h);
+
+//     return (w*h) - answer;
+// }
+
+
+console.log(solution(arg, arg2))
+    </script>
+
+
+<script>
+
+// 사이냅 소프트 while문ver
+// let arg = 54;
+// function solution(n){
+//     let cnt = 0;
+//     while(n !== 0){
+//         if(n % 2 !== 0){
+//             cnt++;
+//             n--;
+//         }else{
+//             cnt++;
+//             n /= 2;
+//         }
+//     }
+//     return `${cnt}단계`;
+// }
+
+// 사이냅소프트 퀴즈 재귀ver
+// let arg = 10333212412;
+// function solution(n){
+//     let arr = [];
+//     const decomposition = (number)=>{
+//         if(number === 0) return `${arr.length}단계`;
+        
+//         if(number % 2 !== 0){ 
+//             arr.push(1);
+//             return decomposition(number-1);
+//         }else{
+//             arr.push(2);
+//             return decomposition(number/2);
+//         }
+//     }
+//     return decomposition(n);
+// }
+</script>
+</body>
+</html>

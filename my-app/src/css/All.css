@@ -1,0 +1,82 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.allSection{
+    padding: 1rem;
+}
+.AllUserInfo{
+    display: flex;
+    justify-content: space-between;
+}
+.scrapButton{
+    position: absolute;
+    top: -20px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    background: rgb(233, 236, 239);
+}
+.scrapButton svg{
+    fill: gray;
+}
+.mainActicle{
+    margin-top: 1rem;
+    padding: 10px;
+    max-width: 450px;
+    border: 1px solid rgb(233, 236, 239);
+    background-color: #fff;
+    position: relative;
+}
+.mainActicle + .mainActicle{
+    margin-top: 3rem;
+}
+.leftInfo{
+    display: flex;
+    align-items: center;
+}
+.rightInfo{
+    display: flex;
+}
+.rightInfo img{
+    width: 20px;
+    height: 20px;
+}
+.rightInfo p{
+    font-size: 14px;
+    margin-left: 0.5rem;
+}
+.AllUserInfo p + p {
+    margin-left: 0.5rem;
+}
+.AllUserInfo .name{
+    font-size: 15px;
+    font-weight: bold;
+}
+.AllUserInfo .date{
+    font-size: 14px;
+    color: rgb(117, 117, 117);
+}
+.AllMain {
+    display: flex;
+    align-items: center;
+}
+.AllMain img {
+    display: block;
+    height: 2rem;
+    width: 2rem;
+    box-shadow: rgba(0, 0, 0, 0.086) 2px 2px 8px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.AllMain p{
+    margin-left: 1rem;
+    cursor: pointer;
+
+}
+.tagInfo{
+    display: flex;
+    color: #18c6b5;
+}
