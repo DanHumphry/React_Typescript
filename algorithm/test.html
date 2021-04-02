@@ -965,26 +965,6 @@
 //     return (w*h) - cutedSquare;
 // }
 
-
-// function solution(w, h) {    
-//     let sum = 0;
-//     let m = h / w;
-//     let y = 0;
-//     for (let i = 0; i < w; i++) {
-//         y = m * i;
-//         sum += Math.floor(y);
-//     }
-//     return sum * 2;
-// }
-
-// function solution(w, h) {
-//     let answer = 0;
-//     w === h ? answer = w * Math.ceil(h/w) : w < h ? answer = w * Math.ceil(h/w) : answer = h * Math.ceil(w/h);
-
-//     return (w*h) - answer;
-// }
-
-
 // //1,2,4 나라
 // let arg = 6;
 // function solution(n) {
@@ -996,6 +976,19 @@
 //     }
 //     return +answer;
 // }
+
+//가장큰수
+let arg = [6, 10, 2];
+//재귀로
+function solution(numbers) {
+    const newArr = []
+    numbers.map((item)=>item+"").forEach((v, i, orgin)=>{
+        const fixedValue = v;
+        const restNumbers = orgin.splice(i, 1)
+        console.log((restNumbers))
+    })
+
+}
 
 
 console.log(solution(arg))
