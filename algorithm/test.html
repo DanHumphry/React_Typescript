@@ -977,21 +977,51 @@
 //     return +answer;
 // }
 
-//가장큰수
-let arg = [6, 10, 2];
-//재귀로
-function solution(numbers) {
-    const newArr = []
-    numbers.map((item)=>item+"").forEach((v, i, orgin)=>{
-        const fixedValue = v;
-        const restNumbers = orgin.splice(i, 1)
-        console.log((restNumbers))
-    })
+// //가장큰수
+// let arg = [6, 10, 2];
+// //재귀로
+// function solution(numbers) {
+//     const newArr = []
+//     numbers.map((item)=>item+"").forEach((v, i, orgin)=>{
+//         const fixedValue = v;
+//         const restNumbers = orgin.splice(i, 1)
+//         console.log((restNumbers))
+//     })
+//
+// }
 
-}
+
+//카카오커머스
+//문제1
+// let arg = [5, 4, 5, 4, 5] //가지고있는 상품권
+// let arg2 = [1, 2, 3, 5, 4] //가지고싶은 상품권
+// function solution(gift_cards, wants) {
+//     const chageCard = (current, goal, i, origin)=>{
+//         if(current.length === i) return current;
+//
+//         if (current[i] === goal[i]) return chageCard(current, goal, ++i, origin);
+//
+//         const find = goal[i];
+//         const wantsIndex = current.indexOf(find);
+//         //조건문 추가 가지고있는 상품권이 교환이 안됬다면, 앞선 인덱스에서
+//
+//         if (i > wantsIndex && current[i] !== origin[i]) return chageCard(current, goal, ++i, origin);
+//         else{
+//             let temp = '';
+//             temp = current[i];
+//             current[i] = current[wantsIndex];
+//             current[wantsIndex] = temp;
+//             return chageCard(current, goal, ++i, origin);
+//         }
+//
+//     }
+//     const result = chageCard(gift_cards, wants, 0, gift_cards);
+//     return result.filter((item,index)=>item !== wants[index]).length
+// }
 
 
-console.log(solution(arg))
+
+console.log(solution(arg, arg2))
     </script>
 
 
