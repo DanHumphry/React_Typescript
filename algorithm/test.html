@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <script>    
+    <script>
 //// level.1 신규아이디 추천
 //let arg = "z-+.^."
 // function solution(new_id) {
@@ -49,7 +49,7 @@
 //     return answer;
 // }
 
-// //k번째 수 
+// //k번째 수
 // let arg = [1, 5, 2, 6, 3, 7, 4];
 // let arg2 = [[2, 5, 3], [4, 4, 1], [1, 7, 3]];
 // function solution(array, commands) {
@@ -137,8 +137,8 @@
 //     };
 // }
 // let App = React.render(Component);
-// App.click(); 
-// let App = React.render(Component); 
+// App.click();
+// let App = React.render(Component);
 // App.type('pear');
 // let App = React.render(Component);
 // App.click();
@@ -249,8 +249,8 @@
 //     // 즉 nums.length/2
 //     let answer = 0;
 //     const set = new Set(nums);
-//     nums.length/2 < [...set].length 
-//     ? answer = nums.length/2 
+//     nums.length/2 < [...set].length
+//     ? answer = nums.length/2
 //     : answer = [...set].length
 //     return answer;
 // }
@@ -299,7 +299,7 @@
 //     let answer = Array(n+1).fill(1)
 //     for(let j = 2; j <= Math.sqrt(n); j++){
 //         if(answer[j] === 0) continue;
-//         for(let k = j; j * k <= n; k++){ 
+//         for(let k = j; j * k <= n; k++){
 //             answer[j * k] = 0;
 //         }
 //     }
@@ -501,7 +501,7 @@
 // }
 
 
-// // 키패드 누르기 
+// // 키패드 누르기
 // let arg = [1, 3, 4, 5, 8, 2, 1, 4, 5, 9, 5];
 // let arg2 = "right";
 // function solution(numbers, hand) {
@@ -639,16 +639,16 @@
 // function solution(nums) {
 //     const getCombinations =  (newArr, selectNumber) => {
 //         const results = [];
-//         if (selectNumber === 1) return newArr.map((value) => [value]); 
+//         if (selectNumber === 1) return newArr.map((value) => [value]);
 
 //         newArr.forEach((fixed, index, origin) => {
-//         const rest = origin.slice(index + 1); 
-//         const combinations = getCombinations(rest, selectNumber - 1); 
-//         const attached = combinations.map((combination) => [fixed, ...combination]); 
-//         results.push(...attached); 
+//         const rest = origin.slice(index + 1);
+//         const combinations = getCombinations(rest, selectNumber - 1);
+//         const attached = combinations.map((combination) => [fixed, ...combination]);
+//         results.push(...attached);
 //         });
 
-//         return results; 
+//         return results;
 //     }
 //     const res = getCombinations(nums, 3);
 //     let answer = 0;
@@ -746,7 +746,7 @@
 //     let answer = [];
 //     let res = [];
 //     let people = stages.length;
-    
+
 //     stages.forEach((item, index, arr)=>{
 //         if(res[item]) res[item][1] += 1;
 //         else res[item] = [item, 1];
@@ -755,7 +755,7 @@
 //     for(let i = 1; i<=N; i++){
 //         if(res[i] === undefined) res[i] = [i, 0]
 //     }
-    
+
 //     res.map((item, index, arr)=>{
 //         let itemCp = item[1];
 //         item[1] /= people;
@@ -899,8 +899,8 @@
 // let arg2 = ["BACDE", "CBADF", "AECB", "BDA"]
 // function solution(str, arr) {
 //     return arr.map((itemInArr)=>{
-//         return itemInArr.split('').map((itemInItem)=>{ 
-//             return str.split('').map((itemInStr)=>{ 
+//         return itemInArr.split('').map((itemInItem)=>{
+//             return str.split('').map((itemInStr)=>{
 //                 if(itemInItem === itemInStr) return itemInStr;
 //                 else return null;
 //             }).join('')
@@ -941,9 +941,6 @@
 
 
 //멀쩡한 사각형
-//대각선은 해당 가로세로의 약수지점에서 격자의 꼭지점에 도달하게되고,
-//꼭지점에 도달할 경우 이동중이던 대각선은 하나의 격자만큼을 덜 자르게된다.
-//기본값은 변의 길이 중 큰 값 = 한칸씩 이동할때 대각선이 꼭지점에 도달하지 못한경우 +1 을 진행
 // let arg = 2;
 // let arg2 = 100;
 // function solution(w, h) {
@@ -1020,6 +1017,27 @@
 // }
 
 
+// //행렬의 곱셈
+// let arg =[ //   [[1, 4],
+//             //   [2, 5],
+//     //           [3, 6]]
+//     [1, 2, 3],
+//     [4, 5, 6]]
+// let arg2 = [[1, 4], [2, 5], [3, 6]]
+// function solution(arr1, arr2) {
+//     return arr1.map((item)=>{
+//         const newArr = [];
+//         for(let i = 0; i < arr2[i].length; i++){
+//             let sum = 0;
+//             for(let l = 0; l < item.length; l++){
+//                 sum += item[l] * arr2[l][i];
+//             }
+//             newArr.push(sum)
+//         }
+//         return newArr;
+//     })
+// }
+
 
 console.log(solution(arg, arg2))
     </script>
@@ -1049,8 +1067,8 @@ console.log(solution(arg, arg2))
 //     let arr = [];
 //     const decomposition = (number)=>{
 //         if(number === 0) return `${arr.length}단계`;
-        
-//         if(number % 2 !== 0){ 
+
+//         if(number % 2 !== 0){
 //             arr.push(1);
 //             return decomposition(number-1);
 //         }else{
