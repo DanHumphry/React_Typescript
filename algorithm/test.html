@@ -1039,7 +1039,51 @@
 // }
 
 
-console.log(solution(arg, arg2))
+// // 삼각 달팽이
+// let arg = 7;
+// function solution(n) {
+//     let N = n;
+//     N % 2 === 0 ? N = (N+1)*(N/2) : N = (N+1) * (Math.floor(N/2)) + Math.ceil(N/2);
+//     const answer = Array(N).fill(0);
+//
+//     let dir = "내려가기";
+//     let location = 0, cnt = 0, num = 1;
+//     while(num <= answer.length){
+//         switch (dir){
+//             case "내려가기":
+//                 if (++cnt !== 1) location += cnt++;
+//                 let downStandard = cnt;
+//                 while(answer[location] === 0){
+//                         answer[location] = num++;
+//                         location += downStandard++;
+//                 }
+//                 dir = "옆으로가기";
+//                 location -= --downStandard;
+//             case "옆으로가기":
+//                 location++;
+//                 while(answer[location] === 0){
+//                     answer[location++] = num++;
+//                 }
+//                 dir = "올라가기";
+//                 location--;
+//             case "올라가기":
+//                 location -= n--;
+//                 let upStandard = n;
+//                 while(answer[location] === 0){
+//                     answer[location] = num++;
+//                     location -= upStandard--;
+//                 }
+//                 dir = "내려가기";
+//                 location += ++upStandard;
+//         }
+//     }
+//     return answer;
+// }
+
+
+
+
+console.log(solution(arg))
     </script>
 
 
