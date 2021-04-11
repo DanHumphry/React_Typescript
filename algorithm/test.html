@@ -1082,6 +1082,45 @@
 
 
 
+//문자열압축
+let arg = "aabbaccc";
+// function solution(s) {
+//     if (s.length === 1) return 1;
+//     const divisible = [];
+//     for(let i = 1; i <= s.length/2; i++) divisible.push(i);
+//
+//     return divisible.map((item)=>{
+//         const newArr = [];
+//         let temp = '';
+//         s.split('').forEach((v, i)=>{
+//             temp += v;
+//             if ((i+1) % item === 0) {
+//                 newArr.push(temp);
+//                 temp = '';
+//             }
+//             if ((i+1) === s.length &&
+//                 (i+1) / item > Math.floor(s.length / item))
+//                 newArr.push(temp);
+//         })
+//         return newArr;
+//     })
+//     .map((item)=>{
+//         let cnt = 1;
+//         const newArr = [];
+//         item.forEach((v, i)=> {
+//             if (v === item[i + 1]) cnt++;
+//             else{
+//                 cnt === 1 ? newArr.push(v) : newArr.push(`${cnt}${v}`);
+//                 cnt = 1;
+//             }
+//         })
+//         return newArr.join("").length;
+//     })
+//     .sort((a,b)=>a-b)[0]
+// }
+
+
+
 
 console.log(solution(arg))
     </script>
