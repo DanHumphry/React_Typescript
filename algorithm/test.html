@@ -1083,7 +1083,7 @@
 
 
 //문자열압축
-let arg = "aabbaccc";
+// let arg = "aabbaccc";
 // function solution(s) {
 //     if (s.length === 1) return 1;
 //     const divisible = [];
@@ -1120,9 +1120,103 @@ let arg = "aabbaccc";
 // }
 
 
+// ▲ - 다음 알파벳
+// ▼ - 이전 알파벳 (A에서 아래쪽으로 이동하면 Z로)
+// ◀ - 커서를 왼쪽으로 이동 (첫 번째 위치에서 왼쪽으로 이동하면 마지막 문자에 커서)
+// ▶ - 커서를 오른쪽으로 이동
+// //조이스틱
+// const arg = "BBAAB";
+// function solution(name) {
+//     let cnt = 0;
+//     const AorNot = [];
+//     for(let i = 0; i < name.length; i++){
+//         const charCode = name.charCodeAt(i)
+//         if (charCode <= 78) cnt += charCode - 65;
+//         else cnt += 91 - charCode;
+//         name[i] === "A" ? AorNot.push(0) : AorNot.push(1)
+//     }
+//
+//     for(let i = 1; i < AorNot.length; i++){
+//         if (AorNot[i]) cnt++;
+//         else{
+//             const next = AorNot.indexOf(1, i)
+//             if (next - (i-1) < (i-1) + 1) cnt++;
+//             else{
+//                 cnt += (i-1) + (AorNot.length-1) - next + 1
+//                 break;
+//             }
+//         }
+//     }
+//
+//     return cnt;
+// }
 
 
-console.log(solution(arg))
+// //큰수만들기
+// const arg = "1231324";
+// const arg2 = 3;
+// //67429495152
+// //79495152
+// function solution(number, k) {
+//     const checkNumberOfDigits = (arr, res, k, max) => {
+//         while(res.length < arr.length - k){
+//             for(let i = 0; i < arr.length; i++){
+//                 if (arr[i] == max && i > res[0]){
+//                     if (arr.length - i + res.length <= arr.length - k) {
+//                         for (let j = i; j < arr.length; j++) res.push(j);
+//                         break;
+//                     }
+//                     else {
+//                         res.push(i);
+//                         break;
+//                     }
+//                 }
+//             }
+//             max--;
+//         }
+//         while(res.length !== arr.length - k) res.pop();
+//         return res.sort((a,b)=>a-b).map((item)=>arr[item]).join("");
+//     }
+//
+//     const findMaxNum = (arr, k) => {
+//         let max = Math.max(...arr);
+//         let res = [];
+//
+//         arr.forEach((item, index) => item == max ? res.push(index): null);
+//         res = res.filter((v)=>arr.length - v > arr.length - k)
+//         if (res.length > 0) {
+//             return checkNumberOfDigits(arr, res, k, max);
+//         }else{
+//             while(arr.indexOf(max+"") > k || arr.indexOf(max+"") === -1) max--;
+//             res.push(arr.indexOf(max+""));
+//             max = Math.max(...arr);
+//             return checkNumberOfDigits(arr, res, k, max);
+//         }
+//     }
+//
+//     return findMaxNum(number.split(""), k);
+// }
+
+// function solution(number, k) {
+//     const cb =  (newArr, selectNumber) => {
+//         const results = [];
+//         if (selectNumber === 1) return newArr.map((value) => [value]);
+//
+//         newArr.forEach((fixed, index, origin) => {
+//             const rest = origin.slice(index + 1);
+//             const combinations = cb(rest, selectNumber - 1);
+//             const attached = combinations.map((combination) => [fixed, ...combination]);
+//             results.push(...attached);
+//         });
+//
+//         return results;
+//     }
+//     return  cb(number.split(""), number.length-k).map((item)=>item.join("")).sort((a,b)=>b-a)[0]
+// }
+
+
+
+console.log(solution(arg, arg2))
     </script>
 
 
