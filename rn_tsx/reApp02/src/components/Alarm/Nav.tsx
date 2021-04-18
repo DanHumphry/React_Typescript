@@ -60,6 +60,7 @@ const Nav = () => {
         screenOptions={{
           headerStyle: {
             backgroundColor: '#4d4d4d',
+            shadowColor: 'transparent',
           },
           headerTintColor: 'black',
           headerTitleStyle: {
