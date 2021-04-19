@@ -1,72 +1,75 @@
 import React, {useRef, useState} from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
-
+import DatePicker from 'react-native-date-picker';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 const Timer = () => {
-  const [start, setStart] = useState(false);
-
-  const [testTime, setTestTime] = useState(0 as any);
-  const [timeBegan, setTimeBegan] = useState(null as any);
-  const [timeStopped, setTimeStopped] = useState(null as any);
-  const [stoppedDuration, setStoppedDuration] = useState(null as any);
+  const [date, setDate] = useState(new Date());
+  const [lap, setLap] = useState([] as any);
   const started: any = useRef(null);
 
-  const handleToggle = () => {
-    setStart(!start);
-    if (!start) {
-      if (timeBegan === null) {
-        setTimeBegan(new Date());
-      }
-      if (timeStopped !== null) {
-        setStoppedDuration(stoppedDuration + new Date() - timeStopped);
-      }
-      started.current = setInterval(clockRunning, 10);
-    } else {
-      setTimeStopped(new Date());
-      clearInterval(started);
-    }
-  };
-
-  function reset() {
-    clearInterval(started);
-    setStoppedDuration(0);
-    setTimeBegan(null);
-    setTimeStopped(null);
-    setTestTime(0);
-  }
-
-  function clockRunning() {
-    let currentTime: any = new Date(),
-      timeElapsed = new Date(currentTime - timeBegan - stoppedDuration),
-      hour = timeElapsed.getUTCHours(),
-      min = timeElapsed.getUTCMinutes(),
-      sec = timeElapsed.getUTCSeconds(),
-      ms = timeElapsed.getUTCMilliseconds();
+  const makeTimer = (dt: any) => {
+    const hour = dt.getUTCHours(),
+      min = dt.getUTCMinutes(),
+      sec = dt.getUTCSeconds();
 
     const time =
       (hour > 9 ? hour : '0' + hour) +
       ':' +
       (min > 9 ? min : '0' + min) +
       ':' +
-      (sec > 9 ? sec : '0' + sec) +
-      '.' +
-      (ms > 99 ? ms : ms > 9 ? '0' + ms : '00' + ms);
-    setTestTime(time);
-  }
+      (sec > 9 ? sec : '0' + sec);
+    const temp = [...lap];
+    temp.push(time);
+    setLap(temp);
+  };
+
+  const startLap = (idx: number) => {
+    started.current = setInterval(() => {
+      const temp = [...lap];
+      let hour = +temp[idx].split(':')[0];
+      let min = +temp[idx].split(':')[1];
+      let sec = +temp[idx].split(':')[2];
+      sec = sec - 1;
+      const time =
+        (hour > 9 ? hour : '0' + hour) +
+        ':' +
+        (min > 9 ? min : '0' + min) +
+        ':' +
+        (sec > 9 ? sec : '0' + sec);
+      temp[idx] = time;
+      setLap(temp);
+    }, 1000);
+  };
 
   return (
     <View>
+      <DatePicker mode="time" date={date} onDateChange={setDate} />
+      <TouchableOpacity
+        onPress={() => {
+          makeTimer(date);
+        }}>
+        <Text>만들기</Text>
+      </TouchableOpacity>
       <View>
-        <Text>{testTime}</Text>
-      </View>
-      <View>
-        <TouchableOpacity onPress={reset}>
-          <Text>Reset</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleToggle}>
-          <Text>{start ? 'Stop' : 'Start'}</Text>
-        </TouchableOpacity>
+        <FlatList
+          data={lap}
+          renderItem={({item, index}) => (
+            <View key={index + 1}>
+              <Text>
+                {`#${index}`}
+                {item}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  startLap(index);
+                }}>
+                <Text>시작하기</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
       </View>
     </View>
   );
 };
+
 export default Timer;

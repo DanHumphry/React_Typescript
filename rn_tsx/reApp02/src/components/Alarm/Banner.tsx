@@ -6,7 +6,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 const Banner = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.h1font}>가장 가까운 알람</Text>
+      <Text style={styles.h1font}>날씨정보있어도 괜찮을듯</Text>
       <Text style={styles.h1font}>15분 후에 울릴 예정</Text>
       <View style={styles.bannerLeftIcon}>
         <SimpleLineIcon name="options-vertical" size={20} />

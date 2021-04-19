@@ -1,91 +1,100 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 
 const StopWatch = () => {
-  const [time, setTime] = useState(0);
-  const [count, setCount] = useState(0);
-  const savedCallback: any = useRef();
-
-  function callback() {
-    setCount(count + 1);
-  }
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  });
-
-  const startCount = () => {
-    if (!start) {
-      function tick() {
-        savedCallback.current();
-      }
-
-      let id = setInterval(tick, 10);
-      return () => clearInterval(id);
-    }
-  };
-
-  const [start, setStart] = useState(false);
+  const [start, setStart] = useState(false as any);
+  const [timer, setTimer] = useState('00:00:00.000' as any);
   const [lapArr, setLapArr] = useState([] as any);
-  const increment: any = useRef(null);
+  const started: any = useRef(null);
 
-  let padToTwo = (number: number) => {
-    if (number < 100) {
-      return `00 : ${number}`;
-    } else {
-      const sec = Math.floor(number / 100);
-      const msec = number % 100;
-      return `${sec} : ${msec}`;
-    }
-    // number <= 9 ? `0${number}` : number;
-  };
-
-  const handleToggle = () => {
+  const startTimer = () => {
+    const startedTime: any = new Date();
     setStart(!start);
-    handleStart();
-    startCount();
-  };
-
-  const handleLap = (number: number) => {
-    setLapArr([...lapArr, number]);
-  };
-
-  const handleStart = () => {
     if (!start) {
-      increment.current = setInterval(() => {
-        setTime((t: number) => ++t);
+      started.current = setInterval(() => {
+        let currentTime: any = new Date(),
+          timeElapsed = new Date(currentTime - startedTime),
+          hour = timeElapsed.getUTCHours(),
+          min = timeElapsed.getUTCMinutes(),
+          sec = timeElapsed.getUTCSeconds(),
+          ms = timeElapsed.getUTCMilliseconds();
+
+        if (timer !== '00:00:00.000') {
+          hour += +timer.split(':')[0];
+          min += +timer.split(':')[1];
+          sec += +timer.split(':')[2].split('.')[0];
+          ms += +timer.split(':')[2].split('.')[1];
+          if (ms >= 1000) {
+            sec++;
+            ms = timeElapsed.getUTCMilliseconds();
+          }
+        }
+
+        const time =
+          (hour > 9 ? hour : '0' + hour) +
+          ':' +
+          (min > 9 ? min : '0' + min) +
+          ':' +
+          (sec > 9 ? sec : '0' + sec) +
+          '.' +
+          (ms > 99 ? ms : ms > 9 ? '0' + ms : '00' + ms);
+        setTimer(time);
       }, 10);
     } else {
-      clearInterval(increment.current);
+      clearInterval(started.current);
     }
   };
 
-  const handleReset = () => {
-    setTime(0);
-    clearInterval(increment.current);
+  function reset() {
+    clearInterval(started.current);
+    setStart(false);
+    setTimer('00:00:00.000');
     setLapArr([]);
-  };
+  }
+
+  function makeLap() {
+    const copy = [...lapArr];
+    copy.push(timer);
+    setLapArr(copy);
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.parent}>
-        <Text style={styles.child}>{padToTwo(time)}</Text>
-        <Text>{count}</Text>
+        <Text style={styles.child}>{timer}</Text>
       </View>
       <View style={styles.buttonParent}>
-        <TouchableOpacity style={styles.button} onPress={handleReset}>
+        <TouchableOpacity style={styles.button} onPress={reset}>
           <Text style={styles.buttonText}>Reset</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleToggle}>
+        <TouchableOpacity style={styles.button} onPress={startTimer}>
           <Text style={styles.buttonText}>{start ? 'Stop' : 'Start'}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => handleLap(time)}
+          onPress={makeLap}
           disabled={!start}>
           <Text style={styles.buttonText}>Lap</Text>
         </TouchableOpacity>
       </View>
+      <ScrollView style={styles.scroll}>
+        <FlatList
+          data={lapArr}
+          renderItem={({item, index}) => (
+            <Text key={index + 1} style={styles.item}>
+              {`#${index}            `}
+              {item}
+            </Text>
+          )}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -141,6 +150,19 @@ const styles = StyleSheet.create({
     color: '#C89933',
     fontSize: 20,
     alignSelf: 'center',
+  },
+  scroll: {
+    maxHeight: '63%',
+    backgroundColor: '#C89933',
+  },
+  item: {
+    padding: 10,
+    fontSize: 22,
+    height: 44,
+    color: '#5C415D',
+    textAlign: 'center',
+    backgroundColor: '#fff',
+    marginBottom: 1,
   },
 });
 export default StopWatch;
