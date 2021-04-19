@@ -2,57 +2,64 @@ import React, {useRef, useState} from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
 
 const Timer = () => {
-  const [time, setTime] = useState(0);
-  const [count, setCount] = useState(0);
   const [start, setStart] = useState(false);
-  const increment: any = useRef(null);
-  const increment2: any = useRef(null);
 
-  let padToTwo = (number: number) => {
-    if (number < 100) {
-      return `00 : ${number}`;
-    } else {
-      const sec = Math.floor(number / 100);
-      const msec = number % 100;
-      return `${sec} : ${msec}`;
-    }
-    // number <= 9 ? `0${number}` : number;
-  };
+  const [testTime, setTestTime] = useState(0 as any);
+  const [timeBegan, setTimeBegan] = useState(null as any);
+  const [timeStopped, setTimeStopped] = useState(null as any);
+  const [stoppedDuration, setStoppedDuration] = useState(null as any);
+  const started: any = useRef(null);
 
   const handleToggle = () => {
     setStart(!start);
-    handleStart();
-  };
-
-  const handleStart = () => {
-    if (start) {
-      increment.current = setInterval(() => {
-        setTime((t: number) => ++t);
-      }, 10);
-
-      increment2.current = setInterval(() => {
-        setCount((t: number) => ++t);
-      }, 1000);
+    if (!start) {
+      if (timeBegan === null) {
+        setTimeBegan(new Date());
+      }
+      if (timeStopped !== null) {
+        setStoppedDuration(stoppedDuration + new Date() - timeStopped);
+      }
+      started.current = setInterval(clockRunning, 10);
     } else {
-      clearInterval(increment.current);
-      clearInterval(increment2.current);
+      setTimeStopped(new Date());
+      clearInterval(started);
     }
   };
 
-  const handleReset = () => {
-    setTime(0);
-    setCount(0);
-    clearInterval(increment.current);
-  };
+  function reset() {
+    clearInterval(started);
+    setStoppedDuration(0);
+    setTimeBegan(null);
+    setTimeStopped(null);
+    setTestTime(0);
+  }
+
+  function clockRunning() {
+    let currentTime: any = new Date(),
+      timeElapsed = new Date(currentTime - timeBegan - stoppedDuration),
+      hour = timeElapsed.getUTCHours(),
+      min = timeElapsed.getUTCMinutes(),
+      sec = timeElapsed.getUTCSeconds(),
+      ms = timeElapsed.getUTCMilliseconds();
+
+    const time =
+      (hour > 9 ? hour : '0' + hour) +
+      ':' +
+      (min > 9 ? min : '0' + min) +
+      ':' +
+      (sec > 9 ? sec : '0' + sec) +
+      '.' +
+      (ms > 99 ? ms : ms > 9 ? '0' + ms : '00' + ms);
+    setTestTime(time);
+  }
 
   return (
     <View>
       <View>
-        <Text>{padToTwo(time)}</Text>
-        <Text>{count}</Text>
+        <Text>{testTime}</Text>
       </View>
       <View>
-        <TouchableOpacity onPress={handleReset}>
+        <TouchableOpacity onPress={reset}>
           <Text>Reset</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleToggle}>
