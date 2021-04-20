@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 
 import Alarm from '@pages/Alarm';
 import StopWatch from '@pages/StopWatch';
 import Timer from '@pages/Timer';
+import AlarmDetail from '@pages/AlarmDetail';
+import Setting from '@pages/Setting';
 
 const Stack = createStackNavigator();
 
 const Nav = () => {
-  const [content] = useState(['Alarm', 'StopWatch', 'Timer']);
+  const [content] = useState(['Alarm', 'StopWatch', 'Timer', 'Setting']);
   const [selectContent, setSelectContent] = useState('Alarm');
   const [navModal, setNavModal] = useState(false);
 
@@ -25,6 +27,9 @@ const Nav = () => {
       {navModal && (
         <View style={styles.navModal}>
           {content.map((item: string, index: number) => {
+            if (item === 'Setting') {
+              return null;
+            }
             const TextStyle =
               selectContent === item
                 ? styles.selectModalText
@@ -50,7 +55,9 @@ const Nav = () => {
       style={{marginLeft: 10}}
       name="settings"
       size={25}
-      onPress={() => Alert.alert('This is a button!')}
+      onPress={() => {
+        setSelectContent('Setting');
+      }}
     />
   );
 
@@ -77,9 +84,12 @@ const Nav = () => {
               ? Alarm
               : selectContent === 'StopWatch'
               ? StopWatch
-              : Timer
+              : selectContent === 'Timer'
+              ? Timer
+              : Setting
           }
         />
+        <Stack.Screen name={'AlarmDetail'} component={AlarmDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

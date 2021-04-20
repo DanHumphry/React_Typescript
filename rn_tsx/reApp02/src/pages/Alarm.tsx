@@ -14,7 +14,6 @@ const Alarm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'black',
     flex: 1,
   },
 });
