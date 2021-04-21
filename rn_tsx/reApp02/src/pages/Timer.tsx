@@ -1,75 +1,89 @@
-import React, {useRef, useState} from 'react';
-import DatePicker from 'react-native-date-picker';
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+
 const Timer = () => {
-  const [date, setDate] = useState(new Date());
-  const [lap, setLap] = useState([] as any);
-  const started: any = useRef(null);
+  const [hour, setHour] = useState(0);
+  const [back, setBack] = useState([] as any);
 
-  const makeTimer = (dt: any) => {
-    const hour = dt.getUTCHours(),
-      min = dt.getUTCMinutes(),
-      sec = dt.getUTCSeconds();
+  useEffect(() => {
+    //원하는것, infinity piker
+    const backHour = [];
+    for (let i = 0; i <= 24; i++) {
+      backHour.push(i);
+    }
+    for (let i = 0; i <= 24; i++) {
+      backHour.push(i);
+    }
 
-    const time =
-      (hour > 9 ? hour : '0' + hour) +
-      ':' +
-      (min > 9 ? min : '0' + min) +
-      ':' +
-      (sec > 9 ? sec : '0' + sec);
-    const temp = [...lap];
-    temp.push(time);
-    setLap(temp);
-  };
-
-  const startLap = (idx: number) => {
-    started.current = setInterval(() => {
-      const temp = [...lap];
-      let hour = +temp[idx].split(':')[0];
-      let min = +temp[idx].split(':')[1];
-      let sec = +temp[idx].split(':')[2];
-      sec = sec - 1;
-      const time =
-        (hour > 9 ? hour : '0' + hour) +
-        ':' +
-        (min > 9 ? min : '0' + min) +
-        ':' +
-        (sec > 9 ? sec : '0' + sec);
-      temp[idx] = time;
-      setLap(temp);
-    }, 1000);
-  };
+    setBack(
+      backHour.map((item: number) => (
+        <Picker.Item label={item + ''} value={item} />
+      )),
+    );
+  }, [hour]);
 
   return (
-    <View>
-      <DatePicker mode="time" date={date} onDateChange={setDate} />
-      <TouchableOpacity
-        onPress={() => {
-          makeTimer(date);
-        }}>
-        <Text>만들기</Text>
-      </TouchableOpacity>
-      <View>
-        <FlatList
-          data={lap}
-          renderItem={({item, index}) => (
-            <View key={index + 1}>
-              <Text>
-                {`#${index}`}
-                {item}
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  startLap(index);
-                }}>
-                <Text>시작하기</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
+    <View style={styles.container}>
+      <View style={styles.article}>
+        <View style={styles.clockSection}>
+          <Picker
+            style={{height: 50, width: 250}}
+            selectedValue={hour}
+            onValueChange={(val: number) => setHour(val)}>
+            {back}
+          </Picker>
+        </View>
+        <View style={styles.buttonSection}>
+          {/*<TouchableOpacity*/}
+          {/*  style={styles.buttonSectionButton}*/}
+          {/*  onPress={() => {}}>*/}
+          {/*  <Text style={styles.buttonSectionText}>Stop</Text>*/}
+          {/*</TouchableOpacity>*/}
+          <TouchableOpacity
+            style={styles.buttonSectionButton}
+            onPress={() => {}}>
+            <Text style={styles.buttonSectionText}>Start</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#4d4d4d',
+    paddingTop: 10,
+    flex: 1,
+  },
+  article: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+  },
+  clockSection: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonSection: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonSectionButton: {
+    backgroundColor: 'black',
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 50,
+  },
+  buttonSectionText: {
+    alignSelf: 'center',
+    color: 'teal',
+    fontSize: 24,
+    fontWeight: '600',
+    padding: 22,
+  },
+});
 
 export default Timer;
