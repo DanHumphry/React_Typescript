@@ -1,5 +1,5 @@
 import Sound from 'react-native-sound';
-import React, {useState} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -8,6 +8,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Alert,
   TouchableOpacity,
 } from 'react-native';
 
@@ -24,6 +25,16 @@ const Section: React.FC<{
 }> = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
+  const sound2 = new Sound(require('./my_file_name.wav'), (error: any) => {
+    if (error) {
+      Alert.alert('error' + error.message);
+      return;
+    }
+
+    sound2.setNumberOfLoops(-1);
+    sound2.setVolume(1);
+  });
+
   return (
     <View style={styles.sectionContainer}>
       <Text
@@ -35,6 +46,26 @@ const Section: React.FC<{
         ]}>
         {title}
       </Text>
+      <TouchableOpacity
+        onPress={() => {
+          sound2.play(() => {
+            sound2.release();
+          });
+        }}>
+        <View>
+          <Text>play Sound</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          sound2.stop(() => {
+            sound2.pause();
+          });
+        }}>
+        <View>
+          <Text>stop Sound</Text>
+        </View>
+      </TouchableOpacity>
       <Text
         style={[
           styles.sectionDescription,
@@ -55,9 +86,6 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const [sound3] = useState(new Sound('my_file_name.wav'));
-  // const sound3 = new Sound('my_file_name.wav');
-
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -73,14 +101,7 @@ const App = () => {
             Edit <Text style={styles.highlight}>App.js</Text> to change this
             screen and then come back to see your edits.
           </Section>
-          <TouchableOpacity
-            onPress={() => {
-              sound3.play();
-            }}>
-            <View>
-              <Text>Test Sound</Text>
-            </View>
-          </TouchableOpacity>
+
           <Section title="See Your Changes">
             <ReloadInstructions />
           </Section>
