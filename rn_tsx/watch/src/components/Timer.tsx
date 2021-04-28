@@ -1,76 +1,175 @@
-import React, {Component} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
-import {Table, TableWrapper, Row} from 'react-native-table-component';
+import React, {useEffect, useRef, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View, Alert} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import Sound from 'react-native-sound';
 
-export default class ExampleThree extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tableHead: [
-        'Head',
-        'Head2',
-        'Head3',
-        'Head4',
-        'Head5',
-        'Head6',
-        'Head7',
-        'Head8',
-        'Head9',
-      ],
-      widthArr: [40, 60, 80, 100, 120, 140, 160, 180, 200],
-    };
-  }
-
-  render() {
-    const state = this.state;
-    const tableData = [];
-    for (let i = 0; i < 30; i += 1) {
-      const rowData = [];
-      for (let j = 0; j < 9; j += 1) {
-        rowData.push(`${i}${j}`);
-      }
-      tableData.push(rowData);
+const Timer = () => {
+  const sound2 = new Sound(require('@sound/ring.wav'), (error: any) => {
+    if (error) {
+      Alert.alert('error' + error.message);
     }
+    sound2.setNumberOfLoops(-1);
+    sound2.setVolume(1);
+  });
+  const [currentTime, setCurrentTime] = useState(0);
 
-    return (
-      <View style={styles.container}>
-        <ScrollView horizontal={true}>
-          <View>
-            <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
-              <Row
-                data={state.tableHead}
-                widthArr={state.widthArr}
-                style={styles.header}
-                textStyle={styles.text}
-              />
-            </Table>
-            <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
-                {tableData.map((rowData, index) => (
-                  <Row
-                    key={index}
-                    data={rowData}
-                    widthArr={state.widthArr}
-                    style={[
-                      styles.row,
-                      index % 2 && {backgroundColor: '#F7F6E7'},
-                    ]}
-                    textStyle={styles.text}
-                  />
-                ))}
-              </Table>
-            </ScrollView>
-          </View>
-        </ScrollView>
+  const [time, setTime] = useState({
+    hour: [] as Element,
+    min: [] as Element,
+    sec: [] as Element,
+  });
+
+  const started: any = useRef(null);
+
+  useEffect(() => {
+    const h: number[] = [],
+      m: number[] = [];
+    for (let i = 0; i <= 24; i++) {
+      h.push(i);
+    }
+    for (let i = 0; i < 60; i++) {
+      m.push(i);
+    }
+    const linkTime = {
+      hour: h.map((item: number, index: number) => (
+        <Picker.Item
+          key={index}
+          label={item < 10 ? `0${item}` : item + ''}
+          value={item}
+        />
+      )),
+      min: m.map((item: number, index: number) => (
+        <Picker.Item
+          key={index}
+          label={item < 10 ? `0${item}` : item + ''}
+          value={item}
+        />
+      )),
+      sec: m.map((item: number, index: number) => (
+        <Picker.Item
+          key={index}
+          label={item < 10 ? `0${item}` : item + ''}
+          value={item}
+        />
+      )),
+    };
+    setTime(linkTime);
+  }, []);
+
+  const startTimer = () => {
+    setTimeout(() => {
+      clearInterval(started.current);
+      setCurrentTime(0);
+      sound2.play(() => {
+        sound2.release();
+      });
+    }, currentTime * 1000);
+    started.current = setInterval(() => {
+      setCurrentTime(v => --v);
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    clearInterval(started.current);
+  };
+
+  const onChangeTime = (value: number) => {
+    setCurrentTime(currentTime + value);
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.article}>
+        <View style={styles.clockSection}>
+          <Picker
+            itemStyle={{fontSize: 35}}
+            style={{height: 80, width: 120}}
+            selectedValue={Math.floor(currentTime / 3600)}
+            onValueChange={(val: number) => {
+              onChangeTime(val * 3600);
+            }}>
+            {time.hour}
+          </Picker>
+          <Picker
+            itemStyle={{fontSize: 35}}
+            style={{height: 80, width: 120}}
+            selectedValue={Math.floor((currentTime % 3600) / 60)}
+            onValueChange={(val: number) => {
+              onChangeTime(val * 60);
+            }}>
+            {time.min}
+          </Picker>
+          <Picker
+            itemStyle={{fontSize: 35}}
+            style={{height: 80, width: 120}}
+            selectedValue={(currentTime % 3600) % 60}
+            onValueChange={(val: number) => {
+              onChangeTime(val);
+            }}>
+            {time.sec}
+          </Picker>
+        </View>
+
+        <View style={styles.buttonSection}>
+          <TouchableOpacity
+            style={styles.buttonSectionButton}
+            onPress={() => {
+              stopTimer();
+            }}>
+            <Text style={styles.buttonSectionText}>Stop</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonSectionButton}
+            onPress={() => {
+              startTimer();
+            }}>
+            <Text style={styles.buttonSectionText}>Start</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff'},
-  header: {height: 50, backgroundColor: '#537791'},
-  text: {textAlign: 'center', fontWeight: '100'},
-  dataWrapper: {marginTop: -1},
-  row: {height: 40, backgroundColor: '#E7E6E1'},
+  soundContainer: {
+    width: '100%',
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: 'lightgrey',
+    opacity: 0.3,
+    flexDirection: 'row',
+  },
+  container: {
+    paddingTop: 10,
+    flex: 1,
+  },
+  article: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+  },
+  clockSection: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonSection: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonSectionButton: {
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  buttonSectionText: {
+    alignSelf: 'center',
+    fontSize: 24,
+    fontWeight: '600',
+    padding: 22,
+  },
 });
+
+export default Timer;

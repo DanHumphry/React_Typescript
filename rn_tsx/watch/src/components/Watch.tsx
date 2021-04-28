@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,25 +7,30 @@ import {
   ScrollView,
 } from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
-
+//문제점 정지와 시작을 반복해서 누르다보면 setInterval 때문에 오차가 갈수록생김
 const StopWatch = () => {
   const started: any = useRef(null);
   const sectionStarted: any = useRef(null);
   const [start, setStart] = useState(false);
   const [timer, setTimer] = useState('00 : 00 : 00 . 000');
   const [sectionTimer, setSectionTimer] = useState('00 : 00 : 00 . 000');
-  // const [sectionRecord, setSectionRecord] = useState([] as string[]);
+  const [tableDataId, setTableDataId] = useState(0);
 
   const tableHead = ['구간', '구간기록', '전체기록'];
   const [tableData, setTableData] = useState([]);
+  const scrollBar: any = useRef(null);
 
   const startTimer = () => {
-    const startedTime: number = +new Date();
+    const startedTime: any = new Date();
     setStart(!start);
     if (!start) {
+      if (sectionTimer !== '00 : 00 : 00 . 000') {
+        startSectionRecord(startedTime);
+      }
+
       started.current = setInterval(() => {
         const currentTime: number = +new Date(),
-          timeElapsed = new Date(currentTime - startedTime);
+          timeElapsed = new Date(currentTime - +startedTime);
         let hour = timeElapsed.getUTCHours(),
           min = timeElapsed.getUTCMinutes(),
           sec = timeElapsed.getUTCSeconds(),
@@ -65,36 +70,50 @@ const StopWatch = () => {
     setTimer('00 : 00 : 00 . 000');
     setSectionTimer('00 : 00 : 00 . 000');
     setTableData([]);
+    setTableDataId(0);
   };
 
-  const makeLap = async () => {
-    await reStartSectionRecord();
-    const init: any = [...tableData];
-    init.push(['0', timer, timer]);
-    setTableData(init);
-    startSectionRecord();
-  };
-
-  const startSectionRecord = () => {
+  const makeLap = () => {
     const startedTime: number = +new Date();
-    sectionStarted.current = setInterval(() => {
-      const currentTime: number = +new Date(),
-        timeElapsed = new Date(currentTime - startedTime);
-      let hour = timeElapsed.getUTCHours(),
-        min = timeElapsed.getUTCMinutes(),
-        sec = timeElapsed.getUTCSeconds(),
-        ms = timeElapsed.getUTCMilliseconds();
 
-      if (sectionTimer !== '00 : 00 : 00 . 000') {
-        hour += +sectionTimer.split(':')[0];
-        min += +sectionTimer.split(':')[1];
-        sec += +sectionTimer.split(':')[2].split('.')[0];
-        ms += +sectionTimer.split(':')[2].split('.')[1];
-        if (ms >= 1000) {
-          sec++;
-          ms = timeElapsed.getUTCMilliseconds();
+    const init: any = [...tableData];
+    init.push([tableDataId, sectionTimer, timer]);
+    setTableData(init);
+    clearInterval(sectionStarted.current);
+    setSectionTimer('00 : 00 : 00 . 000');
+    startSectionRecord(startedTime);
+    setTableDataId(v => ++v);
+  };
+
+  useEffect(() => {
+    scrollBar.current?.scrollToEnd({animated: true});
+  }, [tableData]);
+
+  const startSectionRecord = (startedTime: any) => {
+    sectionStarted.current = setInterval(() => {
+      const currentTime: number = +new Date();
+      let timeElapsed: any;
+      let tempH = 0,
+        tempM = 0,
+        tempS = 0,
+        tempMs = 0;
+      if (typeof startedTime === 'number') {
+        timeElapsed = new Date(currentTime - startedTime);
+      } else {
+        timeElapsed = new Date(currentTime - +startedTime);
+        tempH += +sectionTimer.split(':')[0];
+        tempM += +sectionTimer.split(':')[1];
+        tempS += +sectionTimer.split(':')[2].split('.')[0];
+        tempMs += +sectionTimer.split(':')[2].split('.')[1];
+        if (timeElapsed.getUTCMilliseconds() + tempMs >= 1000) {
+          tempS++;
+          tempMs -= 1000;
         }
       }
+      let hour = timeElapsed.getUTCHours() + tempH,
+        min = timeElapsed.getUTCMinutes() + tempM,
+        sec = timeElapsed.getUTCSeconds() + tempS,
+        ms = timeElapsed.getUTCMilliseconds() + tempMs;
 
       const time =
         (hour > 9 ? hour : '0' + hour) +
@@ -106,11 +125,6 @@ const StopWatch = () => {
         (ms > 99 ? ms : ms > 9 ? '0' + ms : '00' + ms);
       setSectionTimer(time);
     }, 10);
-  };
-
-  const reStartSectionRecord = () => {
-    clearInterval(sectionStarted.current);
-    setSectionTimer('00 : 00 : 00 . 000');
   };
 
   return (
@@ -147,7 +161,7 @@ const StopWatch = () => {
           </Table>
         </View>
       </View>
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll} ref={scrollBar}>
         <View style={{flexDirection: 'row', width: 350}}>
           <View style={styles.tableContainer}>
             <Table>
