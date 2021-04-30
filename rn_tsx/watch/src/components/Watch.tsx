@@ -7,7 +7,8 @@ import {
   ScrollView,
 } from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
-//문제점 정지와 시작을 반복해서 누르다보면 setInterval 때문에 오차가 갈수록생김
+//문제점1. 정지와 시작을 반복해서 누르다보면 setInterval 때문에 오차가 갈수록생김
+//문제점2. 구간기록이 조금씩 차이가 남 -> 구간기록은 무조건 전체기록의 단계별 뺄셈으로 구하기.
 const StopWatch = () => {
   const started: any = useRef(null);
   const sectionStarted: any = useRef(null);
@@ -20,41 +21,37 @@ const StopWatch = () => {
   const [tableData, setTableData] = useState([]);
   const scrollBar: any = useRef(null);
 
+  const parseClock = (h: number, m: number, s: number, ms: number) => {
+    return `${h > 9 ? h : '0' + h} : ${m > 9 ? m : '0' + m} : ${
+      s > 9 ? s : '0' + s
+    } . ${ms > 99 ? ms : ms > 9 ? '0' + ms : '00' + ms}`;
+  };
+
+  const parseMilli = (s: string) => {
+    const spl = s.split(':');
+    const spl_ = spl[2].split('.');
+    return (+spl[0] * 3600 + +spl[1] * 60 + +spl_[0]) * 1000 + +spl_[1];
+  };
+
   const startTimer = () => {
-    const startedTime: any = new Date();
+    const startedTime: number = +new Date();
     setStart(!start);
     if (!start) {
       if (sectionTimer !== '00 : 00 : 00 . 000') {
         startSectionRecord(startedTime);
       }
 
+      const progressed = parseMilli(timer);
       started.current = setInterval(() => {
         const currentTime: number = +new Date(),
-          timeElapsed = new Date(currentTime - +startedTime);
-        let hour = timeElapsed.getUTCHours(),
-          min = timeElapsed.getUTCMinutes(),
-          sec = timeElapsed.getUTCSeconds(),
-          ms = timeElapsed.getUTCMilliseconds();
+          timeElapsed = new Date(currentTime - startedTime + progressed);
 
-        if (timer !== '00 : 00 : 00 . 000') {
-          hour += +timer.split(':')[0];
-          min += +timer.split(':')[1];
-          sec += +timer.split(':')[2].split('.')[0];
-          ms += +timer.split(':')[2].split('.')[1];
-          if (ms >= 1000) {
-            sec++;
-            ms = timeElapsed.getUTCMilliseconds();
-          }
-        }
-
-        const time =
-          (hour > 9 ? hour : '0' + hour) +
-          ' : ' +
-          (min > 9 ? min : '0' + min) +
-          ' : ' +
-          (sec > 9 ? sec : '0' + sec) +
-          ' . ' +
-          (ms > 99 ? ms : ms > 9 ? '0' + ms : '00' + ms);
+        const time = parseClock(
+          timeElapsed.getUTCHours(),
+          timeElapsed.getUTCMinutes(),
+          timeElapsed.getUTCSeconds(),
+          timeElapsed.getUTCMilliseconds(),
+        );
         setTimer(time);
       }, 10);
     } else {
@@ -74,8 +71,7 @@ const StopWatch = () => {
   };
 
   const makeLap = () => {
-    const startedTime: number = +new Date();
-
+    const startedTime: Date = new Date();
     const init: any = [...tableData];
     init.push([tableDataId, sectionTimer, timer]);
     setTableData(init);
@@ -89,40 +85,21 @@ const StopWatch = () => {
     scrollBar.current?.scrollToEnd({animated: true});
   }, [tableData]);
 
-  const startSectionRecord = (startedTime: any) => {
+  const startSectionRecord = (startedTime: number | Date) => {
+    const progressed = parseMilli(sectionTimer);
     sectionStarted.current = setInterval(() => {
       const currentTime: number = +new Date();
-      let timeElapsed: any;
-      let tempH = 0,
-        tempM = 0,
-        tempS = 0,
-        tempMs = 0;
-      if (typeof startedTime === 'number') {
-        timeElapsed = new Date(currentTime - startedTime);
-      } else {
-        timeElapsed = new Date(currentTime - +startedTime);
-        tempH += +sectionTimer.split(':')[0];
-        tempM += +sectionTimer.split(':')[1];
-        tempS += +sectionTimer.split(':')[2].split('.')[0];
-        tempMs += +sectionTimer.split(':')[2].split('.')[1];
-        if (timeElapsed.getUTCMilliseconds() + tempMs >= 1000) {
-          tempS++;
-          tempMs -= 1000;
-        }
-      }
-      let hour = timeElapsed.getUTCHours() + tempH,
-        min = timeElapsed.getUTCMinutes() + tempM,
-        sec = timeElapsed.getUTCSeconds() + tempS,
-        ms = timeElapsed.getUTCMilliseconds() + tempMs;
+      const timeElapsed =
+        typeof startedTime === 'number'
+          ? new Date(currentTime - startedTime + progressed)
+          : new Date(currentTime - +startedTime);
 
-      const time =
-        (hour > 9 ? hour : '0' + hour) +
-        ' : ' +
-        (min > 9 ? min : '0' + min) +
-        ' : ' +
-        (sec > 9 ? sec : '0' + sec) +
-        ' . ' +
-        (ms > 99 ? ms : ms > 9 ? '0' + ms : '00' + ms);
+      const time = parseClock(
+        timeElapsed.getUTCHours(),
+        timeElapsed.getUTCMinutes(),
+        timeElapsed.getUTCSeconds(),
+        timeElapsed.getUTCMilliseconds(),
+      );
       setSectionTimer(time);
     }, 10);
   };
