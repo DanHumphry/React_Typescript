@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import Sound from 'react-native-sound';
+import UseParseClock from '@hooks/UseParseClock';
+import UseParseMilli from '@hooks/UseParseMilli';
 
 const Timer = () => {
   const sound2 = new Sound(require('@sound/ring.wav'), error => {
@@ -23,17 +25,6 @@ const Timer = () => {
 
   const started = useRef<number | NodeJS.Timeout | null>(null);
   const startedForTimer = useRef<number | NodeJS.Timeout | null>(null);
-
-  const parseClock = (h: number, m: number, s: number, ms: number) => {
-    return `${h > 9 ? h : '0' + h} : ${m > 9 ? m : '0' + m} : ${
-      s > 9 ? s : '0' + s
-    } . ${ms > 99 ? ms : ms > 9 ? '0' + ms : '00' + ms}`;
-  };
-  const parseMilli = (s: string) => {
-    const spl = s.split(':');
-    const spl_ = spl[2].split('.');
-    return (+spl[0] * 3600 + +spl[1] * 60 + +spl_[0]) * 1000 + +spl_[1];
-  };
 
   useEffect(() => {
     const h: number[] = [],
@@ -72,7 +63,6 @@ const Timer = () => {
 
   const startTimer = () => {
     const startedTime: number = +new Date();
-    setStart(!start);
     if (!start) {
       startedForTimer.current = setTimeout(() => {
         setSelectTime(0);
@@ -82,15 +72,10 @@ const Timer = () => {
       }, selectTime * 1000);
 
       started.current = setInterval(() => {
-        const currentTime: number = +new Date(),
-          timeElapsed = new Date(startedTime - currentTime + selectTime * 1000);
-        let hour = timeElapsed.getUTCHours(),
-          min = timeElapsed.getUTCMinutes(),
-          sec = timeElapsed.getUTCSeconds(),
-          ms = timeElapsed.getUTCMilliseconds();
-
-        const time = parseClock(hour, min, sec, ms);
-        setExtraTime(time);
+        const timeElapsed = new Date(
+          startedTime - +new Date() + selectTime * 1000,
+        );
+        setExtraTime(UseParseClock(timeElapsed.getTime()));
       }, 10);
     } else {
       if (
@@ -99,8 +84,10 @@ const Timer = () => {
       ) {
         clearInterval(started.current);
         clearTimeout(startedForTimer.current);
+        setPauseAndContinue(false);
       }
     }
+    setStart(!start);
   };
 
   const onChangeTime = (value: number, kind: string) => {
@@ -122,29 +109,16 @@ const Timer = () => {
     }
     const nextTime = selectTime + value - initVal;
     setSelectTime(nextTime);
-
-    const hour = Math.floor(nextTime / 3600),
-      min = Math.floor((nextTime % 3600) / 60),
-      sec = (nextTime % 3600) % 60,
-      ms = 0;
-
-    const time = parseClock(hour, min, sec, ms);
-    setExtraTime(time);
+    setExtraTime(UseParseClock(nextTime));
   };
 
   const Pause = () => {
     setPauseAndContinue(!pauseAndContinue);
     if (!pauseAndContinue) {
-      if (
-        typeof started.current === 'number' &&
-        typeof startedForTimer.current === 'number'
-      ) {
-        clearInterval(started.current);
-        clearTimeout(startedForTimer.current);
-      }
+      clearInterval(started.current as number);
+      clearTimeout(startedForTimer.current as number);
     } else {
-      const extra = parseMilli(extraTime);
-      console.log(extra);
+      const extra = UseParseMilli(extraTime);
       const startedTime: number = +new Date();
 
       startedForTimer.current = setTimeout(() => {
@@ -155,15 +129,8 @@ const Timer = () => {
       }, selectTime * 1000);
 
       started.current = setInterval(() => {
-        const currentTime: number = +new Date(),
-          timeElapsed = new Date(startedTime - currentTime + extra);
-        let hour = timeElapsed.getUTCHours(),
-          min = timeElapsed.getUTCMinutes(),
-          sec = timeElapsed.getUTCSeconds(),
-          ms = timeElapsed.getUTCMilliseconds();
-
-        const time = parseClock(hour, min, sec, ms);
-        setExtraTime(time);
+        const timeElapsed = new Date(startedTime - +new Date() + extra);
+        setExtraTime(UseParseClock(timeElapsed.getTime()));
       }, 10);
     }
   };
@@ -279,6 +246,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   child: {
+    marginTop: 150,
     fontSize: 42,
   },
 });
