@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Platform} from 'react-native';
 import Clock from '@components/Watch/Clock';
 import LapTable from '@components/Watch/LapTable';
 
@@ -18,7 +18,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: '30%',
+    ...Platform.select({
+      ios: {paddingTop: '30%'},
+      android: {paddingTop: '15%'},
+    }),
   },
 });
 export default StopWatch;
