@@ -1,7 +1,7 @@
 import UseParseClock from '@hooks/UseParseClock';
 import {Picker} from '@react-native-picker/picker';
 import React, {useEffect, useState, VFC} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 interface Props {
   selectTime: number;
@@ -85,10 +85,10 @@ const TimePicker: VFC<Props> = ({
     }
   };
   return (
-    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+    <View style={styles.container}>
       <Picker
-        itemStyle={{fontSize: 35}}
-        style={{height: 80, width: 120}}
+        itemStyle={styles.pickerFonts}
+        style={styles.pickerStyles}
         selectedValue={Math.floor(selectTime / 3600)}
         onValueChange={(val: number) => {
           onChangeTime(val * 3600, 'hour');
@@ -96,8 +96,8 @@ const TimePicker: VFC<Props> = ({
         {time.hour}
       </Picker>
       <Picker
-        itemStyle={{fontSize: 35}}
-        style={{height: 80, width: 120}}
+        itemStyle={styles.pickerFonts}
+        style={styles.pickerStyles}
         selectedValue={Math.floor((selectTime % 3600) / 60)}
         onValueChange={(val: number) => {
           onChangeTime(val * 60, 'min');
@@ -105,8 +105,8 @@ const TimePicker: VFC<Props> = ({
         {time.min}
       </Picker>
       <Picker
-        itemStyle={{fontSize: 35}}
-        style={{height: 80, width: 120}}
+        itemStyle={styles.pickerFonts}
+        style={styles.pickerStyles}
         selectedValue={(selectTime % 3600) % 60}
         onValueChange={(val: number) => {
           onChangeTime(val, 'sec');
@@ -116,5 +116,19 @@ const TimePicker: VFC<Props> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  pickerFonts: {
+    fontSize: 35,
+  },
+  pickerStyles: {
+    height: 80,
+    width: 120,
+  },
+});
 
 export default React.memo(TimePicker);

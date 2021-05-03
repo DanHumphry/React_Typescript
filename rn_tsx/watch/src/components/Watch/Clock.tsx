@@ -86,7 +86,7 @@ const Clock: VFC<Props> = ({tableData, setTableData}) => {
         <Text style={styles.child}>{timer}</Text>
       </View>
       <View>
-        <Text style={{fontSize: 15}}>{sectionTimer}</Text>
+        <Text style={styles.sectionTimerFont}>{sectionTimer}</Text>
       </View>
       <View style={styles.buttonParent}>
         <TouchableOpacity style={styles.button} onPress={reset}>
@@ -113,12 +113,24 @@ const styles = StyleSheet.create({
   child: {
     fontSize: 42,
   },
+  sectionTimerFont: {
+    fontSize: 15,
+  },
   buttonParent: {
     flexDirection: 'row',
     marginTop: '8%',
   },
   button: {
-    padding: '5%',
+    width: 90,
+    height: 50,
+    borderStyle: 'solid',
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: '3%',
+    marginLeft: '3%',
   },
   buttonText: {
     fontSize: 20,

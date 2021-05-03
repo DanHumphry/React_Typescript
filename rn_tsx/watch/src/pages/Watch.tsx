@@ -9,7 +9,8 @@ const StopWatch = () => {
   return (
     <View style={styles.container}>
       <Clock tableData={tableData} setTableData={setTableData} />
-      <LapTable tableData={tableData} />
+      {tableData.length === 0 ? null : <LapTable tableData={tableData} />}
+      {/*<LapTable tableData={tableData} />*/}
     </View>
   );
 };

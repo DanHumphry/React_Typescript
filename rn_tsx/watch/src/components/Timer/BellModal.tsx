@@ -17,22 +17,13 @@ interface Props {
 
 const BellModal: VFC<Props> = ({modalVisible, setModalVisible}) => {
   const [bell] = useState(
-    Platform.OS === 'ios'
-      ? new Sound(require('@sound/ring.wav'), error => {
-          if (error) {
-            Alert.alert('error' + error.message);
-          }
-          bell?.setNumberOfLoops(-1);
-          bell?.setVolume(1);
-        })
-      : null,
-    // new Sound('ring.wav', Sound.MAIN_BUNDLE, error => {
-    //     if (error) {
-    //       console.log(error);
-    //     }
-    //     bell.setNumberOfLoops(-1);
-    //     bell.setVolume(1);
-    //   }),
+    new Sound(require('@sound/ring.wav'), error => {
+      if (error) {
+        Alert.alert('error' + error.message);
+      }
+      bell?.setNumberOfLoops(-1);
+      bell?.setVolume(1);
+    }),
   );
 
   useEffect(() => {
@@ -87,9 +78,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
   },
   buttonClose: {
     backgroundColor: '#2196F3',

@@ -53,6 +53,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   iconStyle: {
-    marginTop: 6,
+    marginTop: 3,
   },
 });

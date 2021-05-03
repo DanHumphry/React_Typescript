@@ -1,5 +1,5 @@
 import React, {useRef, useState, useCallback} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import UseParseClock from '@hooks/UseParseClock';
 import UseParseMilli from '@hooks/UseParseMilli';
 import BellModal from '@components/Timer/BellModal';

@@ -17,7 +17,7 @@ const LapTable: VFC<Props> = ({tableData}) => {
 
   return (
     <>
-      <View style={{flexDirection: 'row', width: 350}}>
+      <View style={styles.scrollView}>
         <View style={styles.tableContainer}>
           <Table>
             <Row
@@ -30,7 +30,7 @@ const LapTable: VFC<Props> = ({tableData}) => {
         </View>
       </View>
       <ScrollView style={styles.scroll} ref={scrollBar}>
-        <View style={{flexDirection: 'row', width: 350}}>
+        <View style={styles.scrollView}>
           <View style={styles.tableContainer}>
             <Table>
               <Rows
@@ -49,11 +49,15 @@ const LapTable: VFC<Props> = ({tableData}) => {
 const styles = StyleSheet.create({
   scroll: {
     maxHeight: '55%',
-    marginTop: '5%',
+    marginTop: '10%',
     ...Platform.select({
       ios: {maxHeight: '55%'},
-      android: {maxHeight: '45%'},
+      android: {maxHeight: '50%'},
     }),
+  },
+  scrollView: {
+    flexDirection: 'row',
+    width: 350,
   },
   tableContainer: {
     flex: 1,
