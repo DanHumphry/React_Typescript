@@ -1,7 +1,6 @@
 import React, {useRef, useEffect, VFC} from 'react';
 import {View, StyleSheet, ScrollView, Platform} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
-//시간의 오차를 구하는게 정답은 아니었을 지도, 타이밍 공격 및 핑거 프린팅에 대한 보호를 제공하기 위해 Date.now ()가 있다고하니 찾아보자.
 
 interface Props {
   tableData: never[];
